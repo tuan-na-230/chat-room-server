@@ -1,0 +1,29 @@
+const chatModel = require("./model");
+
+const chatHandler = {
+    async getListChat(chatId, next) {
+        try {
+            const item = await chatModel.findById(chatId);
+            return item
+        } catch (error) {
+            next(error);
+        }
+    },
+
+    async updateListMessage(chatId, newMessage, next) {
+        try {
+            const item = await chatModel.findById(chatId);
+            if (item) {
+                const listMessage = item.messages;
+                listMessage.push(newMessage);
+                await chatModel.findByIdAndUpdate(chatId, { messages: listMessage });
+                const result = await chatModel.findById(chatId)
+                return result;
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+};
+
+module.exports = chatHandler;
