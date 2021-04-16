@@ -15,7 +15,13 @@ const chatHandler = {
             const item = await chatModel.findById(chatId);
             if (item) {
                 const listMessage = item.messages;
-                listMessage.push(newMessage);
+                let dataWillPush;
+                if (newMessage.user = "Quản trị viên") {
+                    dataWillPush = {...newMessage, isManagerViewed: true}
+                } else {
+                    dataWillPush = {...newMessage, isManagerViewed: false}
+                }
+                listMessage.push(dataWillPush);
                 await chatModel.findByIdAndUpdate(chatId, { messages: listMessage });
                 const result = await chatModel.findById(chatId)
                 return result;
